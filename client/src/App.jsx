@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import AddList from './components/AddList'
 import ShowTask from './components/ShowTask'
 import Stats from './components/Stats'
+import './App.css'
+
 const App = () => {
   const [data, setData] = useState(JSON.parse(localStorage.getItem('myData')) || [])
   const [isEdit, setIsEdit] = useState(null)
@@ -11,6 +13,7 @@ const App = () => {
     setIsEdit(item.id)
     setEditText(item.text)
   }
+
   const handleEditSave = () => {
     const newData = data.map((item) => {
       if (item.id === isEdit) {
@@ -33,15 +36,15 @@ const App = () => {
   }
 
   useEffect(() => {
-    const Data_trans = JSON.stringify(data)
-    localStorage.setItem('myData', Data_trans)
+    localStorage.setItem('myData', JSON.stringify(data))
   }, [data])
-  return (
 
-    <div>
-      <h1>Simple Todo List</h1>
-      <hr />
-      <p>Manage your tasks easily</p>
+  return (
+    <div className='app-container'>
+      <header className='header'>
+        <h1>Simple Todo List</h1>
+        <p>Manage your tasks easily</p>
+      </header>
       <main>
         <AddList data={data} setData={setData} />
         <ShowTask
@@ -53,7 +56,6 @@ const App = () => {
           handleEditStart={handleEditStart}
           handleEditSave={handleEditSave}
           handleToggleDone={handleToggleDone}
-
         />
         <Stats data={data} />
       </main>

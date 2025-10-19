@@ -1,49 +1,47 @@
 import React from 'react'
 
-const ShowTask = (props) => {
-    const btn = {
-        display: 'flex'
-    }
-    const { data, setData, isEdit, editText,
-        setEditText, handleEditStart,
-        handleEditSave, handleToggleDone } = props
-
+const ShowTask = ({ data, setData, isEdit, editText, setEditText, handleEditStart, handleEditSave, handleToggleDone }) => {
     const delete_Data = (id) => {
-        const result = data.filter((item) => item.id !== id)
-        setData(result)
+        setData(data.filter((item) => item.id !== id))
     }
 
     return (
-        <div>
-            <div>
-                Your Tasks
+        <div className="card">
+            <div className="task-header">📋 Your Tasks ({data.length})</div>
+            <div className="task-list">
+                {data.length === 0 ? (
+                    <div className="task-empty">
+                        <p>🗒️ No tasks yet!</p>
+                        <small>Add your first task above</small>
+                    </div>
+                ) : (
+                    data.map((item) => (
+                        <div key={item.id} className="task-item">
+                            {item.id === isEdit ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        className="edit-input"
+                                        value={editText}
+                                        onChange={(e) => setEditText(e.target.value)}
+                                    />
+                                    <button className="btn-save" onClick={handleEditSave}>Save</button>
+                                </>
+                            ) : (
+                                <>
+                                    <li className={item.done ? "task-done" : ""}>{item.text}</li>
+                                    <button className="btn-status" onClick={() => handleToggleDone(item.id)}>
+                                        {item.done ? "✅ Done" : "⏳ Pending"}
+                                    </button>
+                                    <button className="btn-edit" onClick={() => handleEditStart(item)}>✏ Edit</button>
+                                    <button className="btn-del" onClick={() => delete_Data(item.id)}>🗑 Delete</button>
+                                </>
+                            )}
+                        </div>
+                    ))
+                )}
             </div>
-            <div>
-                {data.map((item) => {
-                    if (item.id === isEdit) {
-                        return (
-                            <div key={item.id}>
-                                <input
-                                    type="text"
-                                    value={editText}
-                                    onChange={(e) => setEditText(e.target.value)}
-                                />
-                                <button onClick={handleEditSave}>Save</button>
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <div key={item.id} style={btn}>
-                                <li>{item.text}</li>
-                                <button onClick={() => handleToggleDone(item.id)}>{item.done === true ? "Done" : "Remaining"}</button>
-                                <button onClick={() => handleEditStart(item)}>Edit</button>
-                                <button onClick={() => delete_Data(item.id)}>Del</button>
-                            </div>
-                        )
-                    }
-                })}
-            </div>
-        </div >
+        </div>
     )
 }
 

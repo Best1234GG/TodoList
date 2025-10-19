@@ -1,32 +1,33 @@
 import React, { useState } from 'react'
 
-const AddList = (props) => {
-    const { data, setData } = props
+const AddList = ({ data, setData }) => {
     const [text, setText] = useState('')
+
     const saveData = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const newData = {
             id: new Date().getTime(),
-            text: text,
+            text,
             done: false
         }
         setData([...data, newData])
         setText('')
-
     }
+
     return (
-        <div>
-            <section>
-                <form onSubmit={saveData}>
-                    <input
-                        placeholder='Add a new task...'
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        required
-                    />
-                    <button type='submit'>+ Add</button>
-                </form>
-            </section>
+        <div className="card">
+            <form onSubmit={saveData} className='inputs-form'>
+                <input
+                    placeholder='Add a new task...'
+                    value={text}
+                    className='field-input'
+                    onChange={(e) => setText(e.target.value)}
+                    required
+                />
+                <button type='submit' className='btn-add' disabled={text.trim() === ""}>
+                    + Add
+                </button>
+            </form>
         </div>
     )
 }

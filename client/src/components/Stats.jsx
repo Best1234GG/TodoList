@@ -1,20 +1,15 @@
 import React from 'react'
 
-const Stats = (props) => {
-    const { data } = props
-
+const Stats = ({ data }) => {
     const totalTasks = data.length
-    const doneTasks = data.filter(item => item.done === true).length
+    const doneTasks = data.filter(item => item.done).length
     const remainingTasks = totalTasks - doneTasks
 
     return (
-        <div>
-            <hr />
-            <h3>Task Summary</h3>
-            <p>Total Tasks: {totalTasks}</p>
-            <p>Tasks Done: {doneTasks}</p>
-            <p>Tasks Remaining: {remainingTasks}</p>
-
+        <div className='stats-bar'>
+            <span>Total: {totalTasks}</span>
+            <span>Completed: {doneTasks}</span>
+            <span>Remaining: {remainingTasks}</span>
         </div>
     )
 }
